@@ -10,13 +10,14 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $table='sudent';
+    protected $table = 'sudent';
     protected $fillable = [
-        'name','gender','phone','address','image','birthday','MaLH'
-        
+        'name', 'gender', 'phone', 'address', 'image', 'birthday', 'MaLH'
+
     ];
 
-    public function lops(){
-        return $this->belongsTo(LopHoc::class,'MaLH','id');
+    public function lops()
+    {
+        return $this->belongsTo(LopHoc::class, 'MaLH', 'id');
     }
 }

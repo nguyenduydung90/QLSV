@@ -13,7 +13,7 @@ class RegisterRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,36 +24,36 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            
-                'name'=>'required',
-                'email'=>'email|required|unique:users',
-                'address'=>'required',
-                'image'=>'required',
-                'gender'=>'required',
-                'birthday'=>'required',
-                'phone'=>'required|min:10',
-                'password'=>'required',
-                'passwordconfirm'=>'required|same:password'
-            
+
+            'name' => 'required',
+            'email' => 'email|required|unique:users',
+            'address' => 'required',
+            'image' => 'required',
+            'gender' => 'required',
+            'birthday' => 'required',
+            'phone' => 'required|min:10',
+            'password' => 'required',
+            'passwordconfirm' => 'required|same:password'
+
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required'=>'Không được để trống',
-            'email.required'=>'Không được để trống',
-            'address.required'=>'Không được để trống',
-            'image.required'=>'Không được để trống',
-            'gender.required'=>'Không được để trống',
-            'birthday.required'=>'Không được để trống',
-            'phone.required'=>'Không được để trống',
-            'password.required'=>'Không được để trống',
-            'passwordconfirm.required'=>'Không được để trống',
-            'email.email'=>'Email phải đúng định dạng',
-            'email.unique'=>'Email đã được sử dụng',
-            'phone.min'=>'Số điện thoại có ít nhất là 10 chữ số',
-            'passwordconfirm.same'=>'Nhập lại mật khẩu chưa đúng'
+            'name.required' => 'Không được để trống',
+            'email.required' => 'Không được để trống',
+            'address.required' => 'Không được để trống',
+            'image.required' => 'Không được để trống',
+            'gender.required' => 'Không được để trống',
+            'birthday.required' => 'Không được để trống',
+            'phone.required' => 'Không được để trống',
+            'password.required' => 'Không được để trống',
+            'passwordconfirm.required' => 'Không được để trống',
+            'email.email' => 'Email phải đúng định dạng',
+            'email.unique' => 'Email đã được sử dụng',
+            'phone.min' => 'Số điện thoại có ít nhất là 10 chữ số',
+            'passwordconfirm.same' => 'Nhập lại mật khẩu chưa đúng'
         ];
     }
 }

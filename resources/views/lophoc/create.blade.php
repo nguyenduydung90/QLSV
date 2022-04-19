@@ -1,16 +1,31 @@
 @extends('master')
 @section('content')
 <div class="row mt-3">
-    <div class="container" style="width:50%">
+    <div class="container" style="width:40%">
        <div class="card">
          <div class="card-body">
          <div class="card-title">Thêm Lớp Học</div>
          <hr>
           <form action="{{route('lophoc.store')}}" method="post" enctype="multipart/form-data">
             @csrf
+            <div class="form-group">
+              <label for="khoi">Khối</label></label>
+              <input type="text" class="form-control" name='khoi'  id="khoi" placeholder="Nhập khối lớp" required>
+              <div class="position-relative has-icon-right">
+                @if($errors->first('name'))
+                <p class="text-danger">{{$errors->first('name')}}</p>
+                @endif
+               </div>
+             </div>
          <div class="form-group">
-          <label for="input-1">Lớp</label></label>
-          <input type="text" class="form-control" name='name'  id="input-1" placeholder="Enter Your Name">
+          <label for="name" >Lớp</label>
+          <select name="name" id=""  class="form-control" required>
+              <option value="">--Chọn Lớp--</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+          </select>
           <div class="position-relative has-icon-right">
             @if($errors->first('name'))
             <p class="text-danger">{{$errors->first('name')}}</p>
@@ -20,7 +35,7 @@
 
          <div class="form-group">
             <label for="input-3" >Giáo viên chủ nhiệm</label>
-            <select name="MAGV" id=""  class="form-control">
+            <select name="MAGV" id=""  class="form-control" required>
                 <option>Chọn GVCN</option>
                 @foreach ($teachers as $key=>$t )
                 <option value="{{$t->id}}">{{$t->name}}</option>

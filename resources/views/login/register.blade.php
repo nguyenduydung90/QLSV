@@ -52,6 +52,7 @@
          @endif
         </div>
 			  </div>
+
 			  <div class="form-group">
 			  <label for="exampleInputEmailId" class="sr-only">Email ID</label>
 			   <div class="position-relative has-icon-right">
@@ -63,6 +64,7 @@
           @endif
          </div>
 			  </div>
+
 			  <div class="form-group">
 			   <label for="exampleInputPassword" class="sr-only">Password</label>
 			   <div class="position-relative has-icon-right">
@@ -74,7 +76,7 @@
             @endif
            </div>
 			   </div>
-			  </div>
+			 
 
         <div class="form-group">
           <label for="exampleInputPassword" class="sr-only">Confirm Password</label>
@@ -167,10 +169,12 @@
 			  <button type="button" class="btn btn-light btn-block"><i class="fa fa-twitter-square"></i> Twitter</button>
 			 </div>
 			</div>
+      
 			
 			 </form>
 		   </div>
 		  </div>
+  </div>
 		  <div class="card-footer text-center py-3">
 		    <p class="text-warning mb-0">Already have an account? <a href="login.html"> Sign In here</a></p>
 		  </div>

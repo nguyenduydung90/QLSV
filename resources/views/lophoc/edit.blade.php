@@ -1,29 +1,44 @@
 @extends('master')
 @section('content')
 <div class="row mt-3">
-    <div class="container" style="width:50%">
+    <div class="container" style="width:40%">
        <div class="card">
          <div class="card-body">
-         <div class="card-title">Thêm Lớp Học</div>
+         <div class="card-title">Sửa Lớp Học</div>
          <hr>
           <form action="{{route('lophoc.update',$lophoc->id)}}" method="post" enctype="multipart/form-data">
             @csrf
-         <div class="form-group">
-          <label for="input-1">Lớp</label></label>
-          <input type="text" class="form-control" name='name' value="{{$lophoc->name}}"  id="input-1" placeholder="Enter Your Name">
-          <div class="position-relative has-icon-right">
-            @if($errors->first('name'))
-            <p class="text-danger">{{$errors->first('name')}}</p>
-            @endif
-           </div>
-         </div>
+            <div class="form-group">
+              <label for="khoi">Khối</label></label>
+              <input type="text" class="form-control" name='khoi' value="{{$lophoc->khoi}}"  id="khoi" placeholder="Nhập khối lớp" required>
+              <div class="position-relative has-icon-right">
+                @if($errors->first('name'))
+                <p class="text-danger">{{$errors->first('name')}}</p>
+                @endif
+               </div>
+             </div>
+             <div class="form-group">
+              <label for="name" >Lớp</label>
+              <select name="name" id=""  class="form-control" required>
+                  <option value="">--Chọn Lớp--</option>
+                  <option value="A" {{$lophoc->name=='A'?"selected='seclected'":''}}>A</option>
+                  <option value="B"{{$lophoc->name=='B'?"selected='seclected'":''}}>B</option>
+                  <option value="C"{{$lophoc->name=='C'?"selected='seclected'":''}}>C</option>
+                  <option value="D"{{$lophoc->name=='D'?"selected='seclected'":''}}>D</option>
+              </select>
+              <div class="position-relative has-icon-right">
+                @if($errors->first('name'))
+                <p class="text-danger">{{$errors->first('name')}}</p>
+                @endif
+               </div>
+             </div>
 
          <div class="form-group">
-            <label for="input-3" >Giáo viên chủ nhiệm</label>
-            <select name="MAGV" id=""  class="form-control">
+            <label for="input-3"  >Giáo viên chủ nhiệm</label>
+            <select name="MAGV" id=""  class="form-control" required>
                 <option>Chọn GVCN</option>
                 @foreach ($teachers as $key=>$t )
-                <option value="{{$t->id}}">{{$t->name}}</option>
+                <option value="{{$t->id}}"  {{$lophoc->user->name==$t->name?"selected='seclected'":''}}>{{$t->name}}</option>
                 @endforeach
   
             </select>

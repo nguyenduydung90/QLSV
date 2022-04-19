@@ -14,7 +14,7 @@ class AddColumnMALHAndMAGVOnClassTable extends Migration
     public function up()
     {
         Schema::table('class', function (Blueprint $table) {
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('MAGV');
         });
     }

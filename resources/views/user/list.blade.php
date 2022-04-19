@@ -1,20 +1,48 @@
 @extends('master')
 @section('css')
 <style>
-.sm{
+/* .sm{
     width: 40%;
     float: right;
     margin-right: 5px;
-}
+    margin-left: 20px; */
+/* } */
 .form-group{
     margin-right: 20px;
 }
 .btn-search{
-    float:right;
+    width: 40%;
+    float: left;
+    padding-left: 200px;
+}
+.btn-add{
+    width: 30%;
+    float: right;
+    
+}
+
+.add{
+    float: right;
+    margin-right: 30px;
+}
+
+.search{
+width: 50%;
+}
+.count-teacher{
+    width: 30%;
+    float: right;
+    padding-left: 284px;
 }
 
 .card .table td{
     line-height: 52px;
+}
+
+label{
+    float: left;
+    margin-right: 5px;
+    line-height: 40px;
 }
 
 </style>
@@ -23,13 +51,22 @@
 <div class="col-lg-12">
     <div class="card">
         <h5 class="card-title mt-3 ml-3">Danh sách giáo viên</h5>
-        <div class="card-title">
-            <form action="{{route('user.listUser')}}" class='form-group mt-3'>
-                <button type="submit" class="btn btn-light btn-search">Tìm</button>
-                <input type="text" class="form-control sm" name='keyword' placeholder="Enter keyword">
+        <div class="group">
+            <div class="btn-add">
+                <a  class='btn btn-info add' href="{{route('user.create')}}">Thêm giáo viên</a>
+            </div>
+            <div class="count-teacher ">
+                <label for="hoten">Tổng số giáo viên: </label>
+                <input type="text" class="form-control" id="soluong" value="{{$count}}"  style="width: 45px" disabled>
+            </div>   
+            <div class="btn-search">
+                <label for="hoten">Tìm kiếm: </label>
+                <input type="text" class="form-control search" name='keyword' id='keyword' placeholder="Nhập thông tin muốn tìm kiếm">
+                {{-- <span class="search">Tìm kiếm:</span> --}}
                 
-            </form>
-            <a  class='btn btn-info float-left ml-3' href="{{route('user.create')}}">Thêm mới</a>
+            </div>        
+
+            
         </div>
       <div class="card-body">         
             <div class="table-responsive">
@@ -47,26 +84,29 @@
               <th scope="col">Quản lý</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id= 'listUser'>
+            @if (!$users)
+
             <tr>
+                <td colspan="7" class="text-center">Chưa có dữ liệu</td>
+            </tr>
+                                    
+            @else
                 @foreach ($users as $key => $u)
                 <tr>
                     <td scope="row">
                         {{ ++$key }}
                     </td>
-                    <td class="hidden-phone"><img src="{{ $u->image }}" alt="" style="width: 50px; height: 50px"></td>
-
+                    <td class="hidden-phone"><img src="{{ $u->image }}" alt="" style="width: 55px; height: 50px"></td>
                     <td class="hidden-phone text-left" >{{ $u->name }}</td>
-                    {{-- <td class="hidden-phone">{{ $u->gender }}</td> --}}
-                    {{-- <td class="hidden-phone">{{ $u->birthday }}</td> --}}
                     <td class="hidden-phone">{{ $u->address }}</td>
                     <td class="hidden-phone">{{ $u->email }}</td>
                     <td class="hidden-phone">{{ $u->phone }}</td>
                     <td>
                         <a href="{{route('user.edit', $u->id)}}"
-                            class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                            class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Sửa</a>
                         <button type="button" data-toggle="modal" data-target="#myModal{{$u->id}}"
-                            class="btn btn-danger btn-sm"><i class="fa fa-trash-o "></i></button>
+                            class="btn btn-danger btn-sm"><i class="fa fa-trash-o "></i> Xóa</button>
                     </td>
                 </tr>
 
@@ -98,7 +138,7 @@
                 </div>
 
 @endforeach
-
+@endif
 
           </tbody>
         </table>
@@ -107,6 +147,30 @@
     </div>
   </div>
 
+@endsection
+@section('js')
+<script>
+           
+       $(document).ready(function(){
+            $('#keyword').on('keyup',function(){
+                
+                var keyword= $(this).val();
+                $.ajax({
+                    type: 'get',
+                    url: "{{route('user.search')}}",
+                    data: {
+                        keyword: keyword
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        
+                        console.log(response);
+                        $('#listUser').html(response);
+                    }
+                })
+            });
+        })
+</script> 
 @endsection
 @section('toastr')
     @if (Session::has('success'))

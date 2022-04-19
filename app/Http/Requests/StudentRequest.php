@@ -13,7 +13,7 @@ class StudentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,27 +24,28 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'gender'=>'required',
-            'phone'=>'required',
-            'address'=>'required',
-            'image'=>'required',
-            'birthday'=>'required',
-            'MaLH'=>'required'
+            'name' => 'required',
+            'gender' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'image' => 'image',
+            'birthday' => 'required',
+            'MaLH' => 'required',
+
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required'=>'Không được để trống',
-            'address.required'=>'Không được để trống',
-            'image.required'=>'Không được để trống',
-            'gender.required'=>'Không được để trống',
-            'birthday.required'=>'Không được để trống',
-            'phone.required'=>'Không được để trống',
-            'MaLH.required'=>'Không được để trống',
-            
+            'name.required' => 'Không được để trống',
+            'address.required' => 'Không được để trống',
+            'image.image' => 'File ảnh phải đúng định dạng: jpg, jpeg, png, bmp, gif, svg',
+            'gender.required' => 'Không được để trống',
+            'birthday.required' => 'Không được để trống',
+            'phone.required' => 'Không được để trống',
+            'MaLH.required' => 'Không được để trống',
+
         ];
     }
 }

@@ -18,10 +18,10 @@ class User extends Authenticatable
      * @var array
      */
 
-     protected $table='users';
+    protected $table = 'users';
     protected $fillable = [
-        'name', 'email', 'password','gender','phone','address','image','birthday'
-        
+        'name', 'email', 'password', 'gender', 'phone', 'address', 'image', 'birthday'
+
     ];
 
     /**
@@ -42,7 +42,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function lophoc(){
-        return $this->hasOne(LopHoc::class,'MAGV','id');
+    public function lophoc()
+    {
+        return $this->hasOne(LopHoc::class, 'MAGV', 'id');
     }
 }

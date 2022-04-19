@@ -13,7 +13,7 @@ class LopHocRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,16 +24,18 @@ class LopHocRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'MAGV'=>'required'
+            'name' => 'required',
+            'MAGV' => 'required',
+            'khoi' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required'=>'Không được để trống',
-            'MAGV.required'=>'Không được để trống'
+            'name.required' => 'Không được để trống',
+            'MAGV.required' => 'Không được để trống',
+            'khoi.required' => 'Không được để trống'
         ];
     }
 }

@@ -22,7 +22,7 @@ class CreateStudentTable extends Migration
             $table->string('MAGV');
             $table->string('gender');
             $table->string('birthday');
-            $table->string('phone')->unique();
+            $table->string('phone');
             $table->timestamps();
         });
     }
