@@ -76,6 +76,7 @@
                                 <label for="MaLH">Lớp</label>
                                 <select name="MaLH" id="MaLH" class="form-control" >
                                     <option value="">Chọn lớp học</option>
+                                    <option value="Chưa phân lớp">Chưa phân lớp</option>
                                     @foreach ($lophocs as $key => $l)
                                         <option value="{{ $l->id }}">{{ $l->khoi }}{{ $l->name }}</option>
                                     @endforeach
@@ -89,14 +90,6 @@
                         </div>
 
 
-
-
-                <div class="form-group py-2">
-                    <div class="icheck-material-white">
-                        <input type="checkbox" id="user-checkbox1" checked="" />
-                        <label for="user-checkbox1">I Agree Terms & Conditions</label>
-                    </div>
-                </div>
                 <div class="form-group">
 
                     <button type="submit" class="btn btn-light px-5 float-right">Tra cứu</button>

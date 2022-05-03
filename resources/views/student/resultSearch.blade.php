@@ -59,6 +59,7 @@
         }
         #soluong{
             float: left;
+            background: none
         }
     </style>
 @endsection
@@ -75,26 +76,10 @@
 
             </div>
             <div class="group">
-                {{-- <div class="btn-choose-class ">
-                    <label for="lop">Lớp: </label>
-                    <select name="lop" id="lop" class="form-control">
-                        <option value="">--Chọn lớp--</option>
-                        <option value="">Tất cả các lớp</option>
-                        @foreach ($lophocs as $key => $l)
-                            <option value="{{ $l->id }}">{{ $l->khoi }}{{ $l->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="btn-choose-hoten ">
-
-                    <label for="hoten">Họ tên: </label>
-                    <input type="text" class="form-control sm " id='hoten' name='hoten' placeholder="Nhập họ tên">
-
-                </div> --}}
                 <div class="count-student ">
                     <label for="hoten" class='siso'>Sĩ số: </label>
-                    {{-- <input type="text" class="form-control" id="soluong" value="{{ $count }}" style="width: 45px" --}}
-                        {{-- disabled> --}}
+                    <input type="text" class="form-control" id="soluong" value="{{ $count }}" style="width: 45px"
+                        disabled>
                 </div>
             </div>
 
@@ -115,9 +100,9 @@
                         </thead>
                         <tbody id='listStudent'>
 
-                            @if (!$students)
+                            @if ($count == 0)
                                 <tr>
-                                    <td colspan="7" class="text-center">Chưa có dữ liệu</td>
+                                    <td colspan="7" class="text-center">Không có dữ liệu thông tin cần tìm</td>
                                 </tr>
                             @else
                                 @foreach ($students as $key => $student)
@@ -131,7 +116,16 @@
                                         <td class="hidden-phone text-left">{{ $student->name }}</td>
                                         <td class="hidden-phone text-left">{{ $student->gender }}</td>
                                         <td class="hidden-phone text-left">
-                                            {{ $student->MaLH == 'null' ? 'Chưa phân lớp' : $student->khoi . $student->lop }}</td>
+                                            @if (in_array($student->MaLH,$lophoc))
+                                            @foreach ($lophocs as $l )
+                                            @if ($student->MaLH == $l->id)
+                                                {{$l->khoi}}{{$l->name}}
+                                            @endif                                                   
+                                            @endforeach
+                                            @else
+                                            Chưa phân lớp
+                                            @endif
+                                        </td>
 
                                         <td class="hidden-phone">{{ $student->address }}</td>
                                         <td class="hidden-phone">{{ $student->phone }}</td>
@@ -324,6 +318,9 @@
                         </tbody>
                     </table>
                 </div>
+                {{-- <div class=" float-right paginator">
+                    {{ $students->appends($_GET)->links() }}
+                </div> --}}
             </div>
         </div>
     </div>

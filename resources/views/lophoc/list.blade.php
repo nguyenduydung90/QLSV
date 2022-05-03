@@ -59,9 +59,13 @@
             float: left;
         }
 
-        #khoi {
+        #khoiSearch {
             width: 60%;
             float: left;
+        }
+
+        #soluong {
+            background: none;
         }
 
     </style>
@@ -77,7 +81,7 @@
                 </div>
 
                 <div class="btn-add ">
-                    <a class='btn btn-outline-info mt-3 ' href="{{ route('lophoc.create') }}">Thêm lớp</a>
+                    <a class='btn btn-outline-info mt-3 ' href="{{route('lophoc.create')}}">Thêm lớp</a>
                     {{-- <button class="btn btn-outline-info mt-3 btn-create " id="addHS">Thêm mới học sinh</button> --}}
                 </div>
             </div>
@@ -86,7 +90,7 @@
                 <div class="choose-khoi">
                     <div class="btn-choose-class ">
                         <label for="khoi" class='choose'>Khối: </label>
-                        <select name="khoi" id="khoi" class="form-control">
+                        <select name="khoiSearch" id="khoiSearch" class="form-control">
                             <option value="">--Chọn khối--</option>
                             <option value="">Tất cả các khối</option>
                             @foreach ($khois as $key => $k)
@@ -135,7 +139,7 @@
                                         <td class="hidden-phone ">{{ $l->khoi }}{{ $l->name }}</td>
                                         <td class="hidden-phone">{{ $l->GVCN }}</td>
                                         <td class="text-right">
-                                            <a href="{{route('lophoc.detail',$l->id)}}" class="btn btn-warning btn-sm">
+                                            <a href="{{ route('lophoc.detail', $l->id) }}" class="btn btn-warning btn-sm">
                                                 <i class="fa fa-tasks"> Chi tiết</i>
                                             </a>
                                             <a href="{{ route('lophoc.edit', $l->id) }}" class="btn btn-primary btn-sm"><i
@@ -173,27 +177,26 @@
                                         </div>
                                     </div>
 
-                                    <!-- Modal thêm mới học sinh -->
+                                    <!-- Modal thêm mới lớp -->
                                     <div class="modal" id="mymodal">
                                         <div class="modal-dialog">
                                             <div class="modal-content" style="background-color: #17a2b8">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header" style="border-top:0">
-                                                    <h4 class="modal-title">Thêm mới học sinh</h4>
+                                                    <h4 class="modal-title">Thêm Lớp</h4>
                                                     <button type="button" class="close"
                                                         data-dismiss="modal">&times;</button>
                                                 </div>
                                                 <!-- Modal body -->
                                                 <div class="modal-body text-center ">
 
-                                                    <form action="{{ route('student.store') }}" method="post"
-                                                        enctype="multipart/form-data">
-                                                        @csrf
+                                                    <form>
+
                                                         <div class="group">
                                                             <div class="form-group col-lg-6 text-left">
-                                                                <label for="name">Họ và tên</label></label>
-                                                                <input type="text" class="form-control" name='name'
-                                                                    id="name" placeholder="Enter Your Name" required>
+                                                                <label for="khoi">Khối</label></label>
+                                                                <input type="text" class="form-control" name='khoi'
+                                                                    id="khoi" placeholder="Enter Your Name" required>
                                                                 <div class="position-relative has-icon-right">
                                                                     @if ($errors->first('name'))
                                                                         <p class="text-danger">
@@ -201,48 +204,24 @@
                                                                     @endif
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group col-lg-6 text-left">
-                                                                <label for="birthday">Ngày sinh</label></label>
-                                                                <input type="date" class="form-control" name='birthday'
-                                                                    id="birthday" placeholder="Enter Your Birthday"
-                                                                    required>
-                                                                <div class="position-relative has-icon-right">
-                                                                    @if ($errors->first('birthday'))
-                                                                        <p class="text-danger">
-                                                                            {{ $errors->first('birthday') }}</p>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
+
                                                         </div>
 
                                                         <div class="group">
-                                                            <div class="form-group col-lg-6 text-left">
-                                                                <label for="phone">Điện thoại</label>
-                                                                <input type="text" class="form-control" name='phone'
-                                                                    id="phone" placeholder="Enter Your Mobile Number"
-                                                                    required>
-                                                                <div class="position-relative has-icon-right">
-                                                                    @if ($errors->first('phone'))
-                                                                        <p class="text-danger">
-                                                                            {{ $errors->first('phone') }}</p>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
+
                                                             <div class="form-group col-lg-6 text-left">
                                                                 <label for="MaLH">Lớp</label>
-                                                                <select name="MaLH" id="MaLH" class="form-control"
-                                                                    required>
-                                                                    <option>Chọn lớp học</option>
-                                                                    @foreach ($lophocs as $key => $l)
-                                                                        <option value="{{ $l->id }}">
-                                                                            {{ $l->khoi }}{{ $l->name }}
-                                                                        </option>
-                                                                    @endforeach
+                                                                <select name="name" id="MaLH" class="form-control" required>
+                                                                    <option value="">--Chọn Lớp--</option>
+                                                                    <option value="A">A</option>
+                                                                    <option value="B">B</option>
+                                                                    <option value="C">C</option>
+                                                                    <option value="D">D</option>
                                                                 </select>
                                                                 <div class="position-relative has-icon-right">
-                                                                    @if ($errors->first('MaLH'))
+                                                                    @if ($errors->first('name'))
                                                                         <p class="text-danger">
-                                                                            {{ $errors->first('MALH') }}</p>
+                                                                            {{ $errors->first('name') }}</p>
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -250,80 +229,60 @@
 
                                                         <div class="group">
                                                             <div class="form-group col-lg-6 text-left ">
-                                                                <label for="gender">Giới tính</label>
-                                                                <select name="gender" id="gender" class="form-control"
+                                                                <label for="MAGV">Giáo viên chủ nhiệm</label>
+                                                                <select name="MAGV" id="MAGV" class="form-control"
                                                                     required>
-                                                                    <option>Chọn giới tính</option>
-                                                                    <option value="Nam">Nam</option>
-                                                                    <option value="Nữ">Nữ</option>
+                                                                    {{-- <option>Chọn GVCN</option>
+                                                                    @foreach ($teachers as $key => $t)
+                                                                    <option value="{{$t->id}}">{{$t->name}}</option>
+                                                                    @endforeach --}}
+
                                                                 </select>
                                                                 <div class="position-relative has-icon-right">
-                                                                    @if ($errors->first('gender'))
+                                                                    @if ($errors->first('MAGV'))
                                                                         <p class="text-danger">
-                                                                            {{ $errors->first('gender') }}</p>
+                                                                            {{ $errors->first('MAGV') }}</p>
                                                                     @endif
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group col-lg-6 text-left">
-                                                                <label for="image">Avata</label>
-                                                                <input type="file" class="form-control" name='image'
-                                                                    accept=".jpg, .jpeg, .png, .bmp, .gif, .svg" id="image"
-                                                                    placeholder="Enter Your Avata">
 
-                                                                <div class="position-relative has-icon-right">
-                                                                    @if ($errors->first('image'))
-                                                                        <p class="text-danger">
-                                                                            {{ $errors->first('image') }}</p>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
                                                         </div>
 
                                                         <div class="group">
-                                                            <div class="form-group col-lg-12 text-left">
-                                                                <label for="address">Địa chỉ</label>
-                                                                <textarea name="address" class="form-control" id="address" cols="10" rows="3" required></textarea>
-                                                                <div class="position-relative has-icon-right">
-                                                                    @if ($errors->first('address'))
-                                                                        <p class="text-danger">
-                                                                            {{ $errors->first('address') }}</p>
-                                                                    @endif
+
+                                                            <input type="hidden" name='id_lh' value="lophoc">
+
+
+                                                            <div class="form-group py-2 float-left">
+                                                                <div class="icheck-material-white">
+                                                                    <input type="checkbox" id="user-checkbox1" checked="" />
+                                                                    <label for="user-checkbox1">I Agree Terms &
+                                                                        Conditions</label>
                                                                 </div>
                                                             </div>
+
+
                                                         </div>
-                                                        <input type="hidden" name='id_lh' value="lophoc">
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer" style="border-top:0">
 
-
-                                                        <div class="form-group py-2 float-left">
-                                                            <div class="icheck-material-white">
-                                                                <input type="checkbox" id="user-checkbox1" checked="" />
-                                                                <label for="user-checkbox1">I Agree Terms &
-                                                                    Conditions</label>
+                                                            <div class="form-group col-lg-6">
+                                                                <a href="" class="btn btn-light px-5 ml-4 "
+                                                                    data-dismiss="modal">Quay lại</a>
                                                             </div>
+                                                            <div class="form-group col-lg-6">
+
+                                                                <button type="submit" class="btn btn-light px-5 float-right"
+                                                                    id='submit'>Lưu</button>
+                                                            </div>
+
+
                                                         </div>
-
-
                                                 </div>
-                                                <!-- Modal footer -->
-                                                <div class="modal-footer" style="border-top:0">
 
-                                                    <div class="form-group col-lg-6">
-                                                        <a href="" class="btn btn-light px-5 ml-4 "
-                                                            data-dismiss="modal">Quay lại</a>
-                                                    </div>
-                                                    <div class="form-group col-lg-6">
-
-                                                        <button type="submit" class="btn btn-light px-5 float-right"
-                                                            id='submit'>Lưu</button>
-                                                    </div>
-
-
-                                                </div>
+                                                </form>
                                             </div>
-
-                                            </form>
                                         </div>
-                                    </div>
                                 @endforeach
                             @endif
                         </tbody>
@@ -348,14 +307,57 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            $(document).on('click', '#addHS', function() {
-                $("#mymodal").modal('show');
-            })
+            // $(document).on('click', '#addLop', function() {
+            //     $("#mymodal").modal('show');
+            //     $.ajax({
+            //         type: 'get',
+            //         url: "{{ route('lophoc.create') }}",
+            //         dataType: 'json',
+            //         success: function(respone) {
+
+            //             $('#MAGV').append(respone);
+            //         }
+            //     })
+            // });
+
+            // $(document).on('click', '#submit', function() {
+            //     $.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         }
+            //     });
+            //     var khoi = $('#khoi').val();
+            //     var lop = $('#MaLH').val();
+            //     var magv = $('#MAGV').val();
+
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: "lophoc/store",
+            //         data: {
+            //             khoi: khoi,
+            //             name: lop,
+            //             MAGV: magv
+            //         },
+            //         dataType: 'JSON',
+            //         success:function(respone){
+            //             console.log(respone)
+            //             alert(1);
+            //             if(respone.status == success){
+            //                 // location.load();
+            //             }
+            //         },error: function(message){
+            //             alert(message);
+            //         }
+
+                    
+            //     })
+                // $("#mymodal").modal('hide');
+            // })
 
             $('#hoten').on('keyup', function() {
 
                 var hoten = $('#hoten').val();
-                var khoi = $('#khoi').val();
+                var khoi = $('#khoiSearch').val();
                 $.ajax({
                     type: 'get',
                     url: "{{ route('lophoc.search') }}",
@@ -374,9 +376,9 @@
                 })
             });
 
-            $(document).on('change', '#khoi', function() {
+            $(document).on('change', '#khoiSearch', function() {
                 var hoten = $('#hoten').val();
-                var khoi = $('#khoi').val();
+                var khoi = $('#khoiSearch').val();
                 $.ajax({
                     type: 'get',
                     url: "{{ route('lophoc.search') }}",

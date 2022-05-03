@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
 use App\Models\Student;
+use App\Models\LopHoc;
 use App\Repositories\LopHoc\InterFaceLopHoc;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 
 use Illuminate\Http\Request;
@@ -26,14 +28,17 @@ class StudentController extends Controller
     public function index(Request $request)
     {
 
-        $lophocs = DB::table('class')->get();
-        $students = DB::table('sudent')->join('class', 'class.id', '=', 'sudent.MaLH')
-            ->select('sudent.*', 'class.name AS lop', 'class.id AS IdLop', 'class.khoi')
-            ->orderBy('class.khoi', 'asc')
-            ->orderBy('class.name', 'asc')
-            ->get();
-        $count = $students->count();
-        return view('student.list', compact('students', 'lophocs', 'count'))->with('namepage', 'addStudent');
+        $lophocs = Lophoc::all();
+        $students=Student::orderBy('name','asc')->paginate(8);
+
+        $count = Student::all()->count();
+        $array = json_decode(json_encode($lophocs), True);
+        $lophoc=[];
+        foreach($array as $v){
+            array_push($lophoc,$v['id']);
+        }
+        
+        return view('student.list', compact('students', 'lophoc', 'count','lophocs'))->with('namepage', 'addStudent');
     }
 
     public function create()
@@ -88,12 +93,16 @@ class StudentController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(StudentRequest $request, $id)
     {
-        
+    
         $student = $this->student->findStudent($id);
         $img = $request->file('image');
+        $defaulImg = 'Css/assets/images/dafault.jpg';
         if ($request->file('image')) {
+            if($request->file('image') != $defaulImg){
+                File::Delete($student->image);
+            };
             $image = $request->file('image');
             $name = time() . $image->getClientOriginalName();
             $image->move('uploads/avarta', $name);
@@ -151,19 +160,29 @@ class StudentController extends Controller
     {
         $input=$request->all();
 
-        $students=Student::join('class','class.id','=','sudent.MaLH')
-                            ->select('sudent.*','class.name AS lop','class.khoi')
-                            ->get();
+        $students= Student::orderBy('name','asc')->get();
+        $lophocs=LopHoc::all();
+        $array = json_decode(json_encode($lophocs), True);
+        $lophoc=[];
+        foreach($array as $v){
+            array_push($lophoc,$v['id']);
+        }
               
         if($input['name'] != ''){$students=$students->where('name',$input['name']);}
         if($input['birthday'] != ''){$students=$students->where('birthday',$input['birthday']);}
         if($input['gender'] != ''){$students=$students->where('gender','=',$input['gender']);}
         if($input['phone'] != ''){$students=$students->where('phone',$input['phone']);}
         if($input['address'] != ''){$students=$students->where('address',$input['address']);}
-        if($input['MaLH'] != ''){$students=$students->where('MaLH','=',$input['MaLH']);}
+
+        if($input['MaLH'] != ''){
+            $students=$students->where('MaLH','=',$input['MaLH']);
+        }
 
         $soluong = $students->count();
         return view('student.resultSearch')->with('students',$students)
-                                            ->with('pageTitle','Tra cứu');
+                                            ->with('pageTitle','Tra cứu')
+                                            ->with('count',$soluong)
+                                            ->with('lophoc',$lophoc)
+                                            ->with('lophocs',$lophocs);
     }
 }

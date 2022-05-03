@@ -38,7 +38,7 @@
          <div class="form-group">
           <label for="MaLH">Lớp</label>
             <select name="MaLH" id="MaLH" class="form-control" required>
-              <option>Chọn lớp học</option>
+              <option value="Chưa phân lớp">Chọn lớp học</option>
               @foreach ($lophocs as $key => $l )
                 <option value="{{$l->id}}">{{$l->khoi}}{{$l->name}}</option>
               @endforeach

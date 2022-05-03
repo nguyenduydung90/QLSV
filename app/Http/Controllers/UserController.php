@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\User;
 use App\Repositories\User\InterFaceUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+
 
 use function GuzzleHttp\Promise\all;
 
@@ -74,6 +77,7 @@ class UserController extends Controller
 
         try {
             DB::beginTransaction();
+            //User::create($data);
             $this->user->insertUser($data);
             DB::commit();
             return redirect()->route('user.listUser')->with('success', 'Đăng ký thành công');
@@ -88,7 +92,11 @@ class UserController extends Controller
         $password = Hash::make($request->password);
         $user = $this->user->findUser($id);
         $img = $request->file('image');
-        if ($img) {
+        $defaulImg = 'Css/assets/images/dafault.jpg';
+        if ($request->file('image')) {
+            if($request->file('image') != $defaulImg){
+                File::Delete($user->image);
+            };
             $image = $request->file('image');
             $name = time() . $image->getClientOriginalName();
             $image->move('uploads/avarta', $name);

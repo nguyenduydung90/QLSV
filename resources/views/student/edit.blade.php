@@ -40,7 +40,7 @@
             <select name="MaLH" id="" class="form-control" required>
               <option>Chọn lớp học</option>
               @foreach ($lophocs as $key => $l )
-                <option value="{{$l->id}}" {{$student->lops->id==$l->id?"selected='seclected'":''}}>{{$l->khoi}}{{$l->name}}</option>
+                <option value="{{$l->id}}" {{$student->MaLH==$l->id?"selected='seclected'":''}}>{{$l->khoi}}{{$l->name}}</option>
               @endforeach
             </select>
           <div class="position-relative has-icon-right">

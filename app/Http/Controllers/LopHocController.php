@@ -11,20 +11,22 @@ use Illuminate\Http\Request;
 use App\Models\LopHoc;
 use App\Models\User;
 use App\Models\Student;
-
+use App\Repositories\Student\InterFaceStudent;
 
 class LopHocController extends Controller
 {
     protected $lophoc;
     protected $teacher;
+    protected $student;
 
-    public function __construct(InterFaceLopHoc $lophoc, InterFaceUser $teacher)
+    public function __construct(InterFaceLopHoc $lophoc, InterFaceUser $teacher, InterFaceStudent $student)
     {
         $this->lophoc = $lophoc;
         $this->teacher = $teacher;
+        $this->student = $student;
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $lophocs=User::join('class','class.MAGV','=','users.id')
                         ->select('class.id','class.name', 'users.name AS GVCN', 'class.khoi')
@@ -46,6 +48,7 @@ class LopHocController extends Controller
     {
         $teachers = $this->teacher->getAllUser();
         return view('lophoc.create')->with('teachers',$teachers);
+
     }
 
     public function edit($id)
@@ -57,26 +60,37 @@ class LopHocController extends Controller
     }
 
     public function detail($id){
+        //lay danh sach hoc sinh trong lop hoc
         $data=Lophoc::join('sudent','sudent.MaLH','=','class.id')
                             ->join('users','users.id','=','class.MAGV')
                             ->select('sudent.*','class.id AS idLop','class.name AS lop','class.khoi','users.name AS GVCN')
                             ->where('class.id','=',$id)
                             ->get();
-                            
+        //lay danh sach hoc sinh khong thuoc lop hoc                    
+        $students=Student::where('sudent.MaLH','!=',$id)->get();
+              
         $lophoc = $this->lophoc->findLopHoc($id);
         $lophocs=$this->lophoc->getAllLopHoc();
-        // $teacher=User::where('');       
-        // $students=Student::where('MaLH','=',$id);
+
+        //lay mang id lop hoc
+        $array = json_decode(json_encode($lophocs), True);
+        $lophocId=[];
+        foreach($array as $v){
+            array_push($lophocId,$v['id']);
+        }
+                                         
         $count=$data->count();
         
         return view('lophoc.detail')->with('data',$data)
                                         ->with('count',$count)
                                         ->with('lophoc',$lophoc)
-                                        ->with('lophocs',$lophocs);
+                                        ->with('lophocs',$lophocs)
+                                        ->with('lophocId',$lophocId)
+                                        ->with('students',$students);
                                     
     }
 
-    public function store(LopHocRequest $request)
+    public function store(Request $request)
     {
 
         $data = [
@@ -84,11 +98,13 @@ class LopHocController extends Controller
             'MAGV' => $request->MAGV,
             'khoi' => $request->khoi
         ];
-
+        // return response()->json($data);
         try {
             DB::beginTransaction();
             $this->lophoc->insertLopHoc($data);
             DB::commit();
+            // $result['status']='success';
+            // return response()->json($data);
             return redirect()->route('lophoc.index')->with('success', 'Thêm thành công');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -116,7 +132,20 @@ class LopHocController extends Controller
     }
 
     public function delete($id)
-    {
+    {   
+        $students=Student::where('MaLH',$id)->get();
+        foreach($students as $value){
+            $data=[
+                'name' => $value->name,
+                'image' => $value->image,
+                'address' => $value->address,
+                'phone' => $value->phone,
+                'birthday' => $value->birthday,
+                'gender' => $value->gender,
+                'MaLH' => 'Chưa phân lớp'
+            ];
+            $this->student->updateStudent($value->id, $data);;
+        }
         $this->lophoc->deleteLopHoc($id);
         return redirect()->route('lophoc.index')->with('success', 'Xóa thành công');
     }

@@ -31,6 +31,7 @@
     <!-- toastr js -->
 
     @yield('css');
+
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -65,11 +66,8 @@
                         <i class="zmdi zmdi-format-list-bulleted"></i> <span>Lớp</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('student.viewSearch') }}">
-                        <i class="zmdi zmdi-format-list-bulleted"></i> <span>Tra cứu học sinh</span>
-                    </a>
-                </li>
+                        <li><a class="student-search" href="{{route('student.viewSearch')}}"><i class="fa fa-search"></i>Tra cứu học sinh</a></li>
+
 
                 {{-- <li >
                     <button class="dropdown-btn sidebar-menu do-nicescrol">
@@ -133,7 +131,7 @@
                                 <a href="javaScript:void();">
                                     <div class="media">
                                         <div class="avatar"><img class="align-self-start mr-3"
-                                                src="{{Auth::user()->image }}" alt="user avatar"></div>
+                                                src="{{asset(Auth::user()->image) }}" alt="user avatar"></div>
                                         <div class="media-body">
                                             <h6 class="mt-2 user-title">{{ Auth::user()->name }}</h6>
                                             <p class="user-subtitle">{{ Auth::user()->email }}</p>
@@ -267,6 +265,7 @@
     {{-- <script src="{{asset('/Css/assets/js/index.js')}}"></script> --}}
 
     @yield('js')
+
 </body>
 
 </html>

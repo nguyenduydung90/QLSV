@@ -44,6 +44,10 @@ label{
     margin-right: 5px;
     line-height: 40px;
 }
+#soluong{
+            background: none;
+        }
+
 
 </style>
 @endsection
